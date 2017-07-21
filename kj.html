@@ -1,0 +1,44 @@
+<html>
+<head>
+<style>
+table, td {
+	border: 2px solid purple;
+	background-color: antiqueWhite;
+}
+td {
+	background-color: yellow;
+	font-size: 20px;
+	font-family: arial;
+	color: purple;
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+<script type="text/javascript">
+
+var table = document.createElement("TABLE")
+document.body.appendChild(table)
+
+for (var i = 1; i <= 9; i++) {
+	var tr = document.createElement("TR")
+	table.appendChild(tr)
+
+	for (var j = 1; j <= i; j++) {
+		var td = document.createElement("TD")
+		td.setAttribute("id", i*100+j)
+		var textNode = document.createTextNode(j+'x'+i+'='+i*j+' ')
+		td.appendChild(textNode)
+		td.onmousemove = function() {
+			this.setAttribute("style", "background-color: red")
+		}
+		td.onmouseout = function() {
+			this.setAttribute("style", "background-color: yellow")
+		}
+		tr.appendChild(td)
+	};
+}
+</script>
+</body>
+</html>

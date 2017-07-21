@@ -1,0 +1,110 @@
+<html>
+<head>
+<style>
+table, td {
+	border: 1px solid black;
+}
+
+td {
+	width: 60;
+	height: 60;
+	border-radius: 15px 30px 35px;
+}
+
+.box {
+	animation: roll 1s;
+}
+
+@keyframes roll {
+	from {background: blue}
+	to {background: red}
+}
+
+</style>
+</head>
+
+<body>
+<script type="text/javascript">
+
+let width = 6
+let height = 6
+let mutiple = 1000
+let selectedTitle = "selected"
+let normalTitle = "normal"
+var selectedSet = new Set()
+var	stepCount = 0
+
+let titleLabel = document.createElement("P")
+titleLabel.innerHTML = stepCount
+document.body.appendChild(titleLabel)
+
+let table = document.createElement("TABLE")
+document.body.appendChild(table)
+	
+for (var i = 0; i < height; i ++) {
+	var tr = document.createElement("TR")
+	table.appendChild(tr)
+	for (var j = 0; j < width; j++) {
+		var td = document.createElement("TD")
+		td.id = i * mutiple + j
+		td.title = normalTitle
+		td.onclick = function() {
+			stepCount ++
+			titleLabel.innerHTML = stepCount
+			//	this
+			updateTdSelected(this)
+			let this_i = parseInt(this.id/mutiple)
+			let this_j = this.id%mutiple
+			//	top
+			updateTdSelectedById(this_i - 1, this_j)
+			//	bottom
+			updateTdSelectedById(this_i + 1, this_j)
+			//	left
+			updateTdSelectedById(this_i, this_j - 1)
+			//	right
+			updateTdSelectedById(this_i, this_j + 1)
+			//	全都翻过来之后 判断是否胜利了
+			judageAllSelected()
+		}
+
+		tr.appendChild(td)
+	}
+}
+
+function updateTdSelectedById (tr_i, tr_j) {
+	//	判断是否在画布内
+	if (tr_i >= 0 && tr_i < height &&
+	    tr_j >= 0 && tr_j < width) {
+		let trId = tr_i * mutiple + tr_j
+		let tr = document.getElementById(trId)
+		updateTdSelected(tr)
+	};
+}
+
+function updateTdSelected (td) {
+	if (td.title == normalTitle) {
+		td.style.backgroundColor = "red"
+		td.setAttribute("class", "box")
+		td.title = selectedTitle
+		selectedSet.add(td.id)
+	} else{
+		td.style.backgroundColor = "white"
+		td.title = normalTitle
+		if (selectedSet.has(td.id)) {
+			selectedSet.delete(td.id)	
+		};
+	};
+}
+
+//	判断是否胜利了
+function judageAllSelected () {
+	if (selectedSet.size == width * height) {
+		alert("就算你成功了，帅毅也是最帅的")
+	} else if (selectedSet.size == width * height - 1) {
+		alert("就差最后一个了，加油！")
+	};
+}
+
+</script>
+</body>
+</html>
